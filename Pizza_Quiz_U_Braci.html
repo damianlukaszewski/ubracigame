@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Quiz - U BRACI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .quiz-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .answers button {
+            display: block;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .answers button:hover {
+            background: #0056b3;
+        }
+        .result {
+            display: none;
+            text-align: center;
+        }
+        .result h2 {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Pizza Quiz - U BRACI</h1>
+        <div id="quiz">
+            <div class="question"></div>
+            <div class="answers"></div>
+        </div>
+        <div class="result">
+            <h2>Gratulacje!</h2>
+            <p id="score"></p>
+            <p id="discount"></p>
+        </div>
+    </div>
+    <script>
+        const quizData = [
+            {
+                question: "Z jakiego kraju pochodzi pizza?",
+                options: ["Francja", "Włochy", "Hiszpania", "Grecja"],
+                answer: 1
+            },
+            {
+                question: "Jak nazywa się klasyczna pizza z sosem pomidorowym, mozzarellą i bazylią?",
+                options: ["Capricciosa", "Marinara", "Margherita", "Diavola"],
+                answer: 2
+            },
+            {
+                question: "Który ser jest najczęściej używany do pizzy?",
+                options: ["Gouda", "Mozzarella", "Cheddar", "Brie"],
+                answer: 1
+            },
+            {
+                question: "Jak nazywa się specjalny piec do pieczenia pizzy?",
+                options: ["Tandoor", "Piekarnik elektryczny", "Piec opalany drewnem", "Mikrofala"],
+                answer: 2
+            },
+            {
+                question: "Ile kawałków ma standardowa pizza podzielona na 8 części?",
+                options: ["6", "8", "10", "12"],
+                answer: 1
+            },
+            {
+                question: "Jak nazywa się włoski rodzaj ciasta do pizzy, które dojrzewa przez 24-48 godzin?",
+                options: ["Ciabatta", "Focaccia", "Neapolitańskie ciasto", "Spaghetti"],
+                answer: 2
+            },
+            {
+                question: "Co oznacza 'Pizza Bianca'?",
+                options: ["Pizza z sosem pomidorowym", "Pizza bez sosu pomidorowego", "Pizza z dodatkiem owoców morza", "Pizza wegetariańska"],
+                answer: 1
+            },
+            {
+                question: "Jaką nazwę nosi pizza z dodatkiem pikantnego salami?",
+                options: ["Calzone", "Diavola", "Prosciutto e Funghi", "Quattro Formaggi"],
+                answer: 1
+            },
+            {
+                question: "Jaki jest czas pieczenia pizzy w tradycyjnym piecu opalanym drewnem?",
+                options: ["5-7 minut", "90 sekund", "20 minut", "10 minut"],
+                answer: 1
+            },
+            {
+                question: "Kiedy obchodzimy Światowy Dzień Pizzy?",
+                options: ["1 czerwca", "9 lutego", "10 października", "15 lipca"],
+                answer: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questionEl = document.querySelector(".question");
+        const answersEl = document.querySelector(".answers");
+        const resultEl = document.querySelector(".result");
+        const scoreEl = document.getElementById("score");
+        const discountEl = document.getElementById("discount");
+
+        function loadQuestion() {
+            const currentQuizData = quizData[currentQuestion];
+            questionEl.textContent = currentQuizData.question;
+            answersEl.innerHTML = "";
+            currentQuizData.options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.addEventListener("click", () => checkAnswer(index));
+                answersEl.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected) {
+            if (selected === quizData[currentQuestion].answer) {
+                score++;
+            }
+            currentQuestion++;
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById("quiz").style.display = "none";
+            resultEl.style.display = "block";
+            scoreEl.textContent = `Twój wynik: ${score}/10`;
+            if (score >= 10) {
+                discountEl.textContent = "Zdobyłeś rabat 12 PLN!";
+            } else if (score >= 8) {
+                discountEl.textContent = "Zdobyłeś rabat 10 PLN!";
+            } else {
+                discountEl.textContent = "Spróbuj ponownie, aby zdobyć rabat!";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
